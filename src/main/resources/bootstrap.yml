@@ -1,0 +1,48 @@
+#这里使用的是 bootstrap.yml 这个配置，bootstrap的优先级高于application，很多配置都是要在服务启动前加载，
+#所以使用bootstrap
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://10.1.60.110:30010/eureka/
+  instance:
+    prefer-ip-address: true
+spring:
+  profiles:
+    active: dev
+---
+spring:
+  application:
+    name: microservice-fenqu-customer
+  profiles: prov
+  cloud:
+    config:
+      profile: prov
+      label: master
+      discovery:
+        enabled: true
+        service-id: microservice-config-server
+---
+spring:
+  application:
+    name: microservice-fenqu-customer
+  profiles: dev
+  cloud:
+    config:
+      profile: dev
+      label: master
+      discovery:
+        service-id: microservice-config-server
+        enabled: true
+---
+spring:
+  profiles: test
+  application:
+    name: microservice-fenqu-customer
+  cloud:
+    config:
+      profile: test
+      label: master
+      discovery:
+        enabled: true
+        service-id: microservice-config-server
+
